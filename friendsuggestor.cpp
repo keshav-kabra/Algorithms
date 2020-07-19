@@ -21,10 +21,13 @@ void print_graph(unordered_map<string, list<string>>& vertex )
 string new_person(unordered_map<string , list<string>>& vertex )
 {
     string person;
+    int cofriends;
     cout<<"enter the name of new person"<<endl;
     cin>>person;
-    cout<<"enter any three friends "<<endl;
-    for(int i=0;i<3;i++)  
+    cin.ignore();
+    cout<<"enter total cofriends  "<<endl;
+    cin>>cofriends;
+    for(int i=0;i<cofriends;i++)  
     {
         string cofriend; 
         cin>>cofriend;
@@ -48,7 +51,7 @@ unordered_map<string , list<string>> read_map(unordered_map<string , list<string
         for(int j=0;j<cofriends;j++)
         {
             string  cofriend;
-            cout<<"enter "<<i+1<<"  cofriend "<<endl;
+            cout<<"enter "<<j+1<<"  cofriend "<<endl;
             cin>>cofriend;
             vertex[person].push_back(cofriend);
         }
@@ -87,6 +90,35 @@ void print_suggested_friends(map<string , int>& priority)
         
     }
 }
+
+void suggest_two_friends(map<string , int >&priority , unordered_map<string, list<string>> vertex , string person)
+{
+    int flag = 0;
+    int max1 =0, max2 = 0;
+    string first , second;
+
+    for(auto itr = priority.begin() ; itr!= priority.end();itr++ )
+    {
+        if( itr->second >max1 )
+        {
+            flag = 0;
+            for(auto itr1 = vertex[person].begin() ; itr1 != vertex[person].end();itr1++)
+            {
+                if(itr->first == *itr1)
+                flag = 1;
+            }
+            if(flag == 0)
+            {
+                max1 = itr->second;
+                first = itr->first;
+            }
+        }
+
+    }
+
+    cout<<"  name of the person is "<<first<<endl;
+
+}
 int main()
 {
     unordered_map<string, list<string>> vertex;
@@ -96,6 +128,7 @@ int main()
     string person = new_person(vertex);
     priority = friend_suggestor(vertex , person , priority);
     print_suggested_friends(priority);
+    suggest_two_friends(priority , vertex , person);
 
 
 
